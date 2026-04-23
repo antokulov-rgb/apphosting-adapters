@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лифт-Контроль | Мастер (Cloud)</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <!-- HTML такой же, как в предыдущей версии, но можно скопировать из index.html -->
+    <div class="app-container">
+        <header class="header">
+            <h1>🏗️ Лифт-Контроль <span style="font-size:0.8rem;">(Облачная версия)</span></h1>
+            <div class="user-info">
+                <span>👨‍🔧 <span id="masterName"></span></span>
+                <button id="logoutBtn" class="btn-logout">Выйти</button>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-btn active" data-tab="dashboard">📊 Дашборд</button>
+            <button class="nav-btn" data-tab="tasks">📋 Задания</button>
+            <button class="nav-btn" data-tab="create">➕ Создать задание</button>
+            <button class="nav-btn" data-tab="lifts">🏢 Лифты</button>
+        </nav>
+
+        <!-- Вкладки с тем же содержимым, что и раньше -->
+        <div id="dashboardTab" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Активные задания</h3><div class="stat-value" id="activeCount">0</div></div>
+                <div class="stat-card"><h3>На проверке</h3><div class="stat-value" id="pendingCount">0</div></div>
+                <div class="stat-card"><h3>Просрочено</h3><div class="stat-value" id="overdueCount">0</div></div>
+                <div class="stat-card"><h3>Всего заданий</h3><div class="stat-value" id="completedCount">0</div></div>
+            </div>
+            <div class="recent-tasks"><h2>🔄 Последние задания</h2><div id="recentTasksList" class="task-list"></div></div>
+        </div>
+
+        <div id="tasksTab" class="tab-content">
+            <div class="filters">
+                <select id="statusFilter"><option value="all">Все статусы</option><option value="assigned">Назначено</option><option value="in_progress">В работе</option><option value="pending_review">На проверке</option><option value="completed">Завершено</option></select>
+                <select id="mechanicFilter"><option value="all">Все механики</option></select>
+                <input type="text" id="searchInput" placeholder="🔍 Поиск по адресу">
+            </div>
+            <div id="tasksList" class="task-list"></div>
+        </div>
+
+        <div id="createTab" class="tab-content">
+            <form id="createTaskForm" class="form-create">
+                <label>Лифт:</label><select id="liftSelect" required></select>
+                <label>Механик:</label><select id="mechanicSelect" required></select>
+                <label>Тип ТО:</label><select id="toType" required><option>Ежемесячное</option><option>Квартальное</option><option>Полугодовое</option><option>Годовое</option></select>
+                <label>Срок:</label><input type="datetime-local" id="dueDate" required>
+                <label>Описание:</label><textarea id="description" rows="3"></textarea>
+                <button type="submit" class="btn-primary">✅ Создать задание</button>
+            </form>
+        </div>
+
+        <div id="liftsTab" class="tab-content">
+            <button id="addLiftBtn" class="btn-secondary">➕ Добавить лифт</button>
+            <div id="liftsList" class="lifts-grid"></div>
+        </div>
+    </div>
+
+    <script src="firebase-init.js"></script>
+    <script src="app-firebase.js"></script>
+</body>
+</html>

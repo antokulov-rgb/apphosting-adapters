@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Лифт-Контроль (Firebase)</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <h1>🏗️ Лифт-Контроль</h1>
+        <h2>Вход в систему (Firebase Cloud)</h2>
+        
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:8px;">
+            <input type="password" id="password" placeholder="Пароль" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:8px;">
+            <button type="submit" class="btn-primary">Войти</button>
+        </form>
+        
+        <div class="demo-credentials">
+            <p><strong>Демо-аккаунты (после регистрации в Firebase):</strong></p>
+            <p>Мастер: master@lift.ru / 123456</p>
+            <p>Механик Иван: ivan@lift.ru / 123456</p>
+            <p>Механик Сергей: sergey@lift.ru / 123456</p>
+            <p>Механик Дмитрий: dmitry@lift.ru / 123456</p>
+        </div>
+    </div>
+
+    <script src="firebase-init.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                // Вход через Firebase Auth
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Получаем роль пользователя
+                const snapshot = await db.ref(`users/${user.uid}/role`).once('value');
+                const role = snapshot.val();
+                
+                if (role === 'master') {
+                    window.location.href = 'index.html';
+                } else if (role === 'mechanic') {
+                    // Сохраняем логин механика для фильтрации
+                    localStorage.setItem('mechanicEmail', email.split('@')[0]);
+                    window.location.href = 'mechanic.html';
+                } else {
+                    alert('Роль не определена');
+                }
+            } catch (error) {
+                alert('Ошибка входа: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

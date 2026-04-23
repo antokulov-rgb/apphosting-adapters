@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лифт-Контроль | Электромеханик</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>🏗️ Лифт-Контроль <span style="font-size:0.8rem;">(Электромеханик)</span></h1>
+            <div class="user-info">
+                <span>🔧 <span id="mechanicName"></span></span>
+                <button id="logoutBtn" class="btn-logout">Выйти</button>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-btn active" data-tab="my-tasks">📋 Мои задания</button>
+            <button class="nav-btn" data-tab="history">📜 История</button>
+        </nav>
+
+        <!-- Мои задания -->
+        <div id="myTasksTab" class="tab-content active">
+            <div class="filters">
+                <select id="taskStatusFilter">
+                    <option value="all">Все задания</option>
+                    <option value="assigned">Назначено</option>
+                    <option value="in_progress">В работе</option>
+                    <option value="pending_review">На проверке</option>
+                    <option value="completed">Завершено</option>
+                </select>
+            </div>
+            <div id="myTasksList" class="task-list"></div>
+        </div>
+
+        <!-- История -->
+        <div id="historyTab" class="tab-content">
+            <h2>Выполненные задания</h2>
+            <div id="historyList" class="task-list"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для выполнения задания -->
+    <div id="taskModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modalTitle">Выполнение задания</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="mechanic.js"></script>
+</body>
+</html>
